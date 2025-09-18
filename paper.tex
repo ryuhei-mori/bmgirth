@@ -1,0 +1,304 @@
+\documentclass[twoside,10pt]{article}
+
+
+\usepackage[letterpaper, hmargin=1in, vmargin={1in, 1.2in}]{geometry}
+\usepackage{titling}
+\usepackage{authblk}
+\usepackage{hyperref}
+
+%\usepackage[backend=biber, style=alphabetic, maxbibnames=99, doi=false, isbn=false, url=false]{biblatex}
+%\addbibresource{biblio.bib}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{xspace}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{bm}
+\usepackage{url}
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+\usetikzlibrary{cd}
+\usepackage[braket]{qcircuit}
+\usepackage{calc}
+\usepackage{algpseudocode}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tikz}
+
+\usepackage[titletoc,title]{appendix}
+
+\renewcommand\Affilfont{\small}
+
+\DeclareMathOperator{\cutrank}{cutrank}
+\DeclareMathOperator{\rw}{rw}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\SetKwProg{Procedure}{Procedure}{}{}
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{construction}{Construction}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{open}{Open Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+
+\newcommand{\CZ}{\ensuremath{\mathrm{CZ}}\xspace}
+\newcommand{\NCZ}{\Gamma_\mathrm{CZ}}
+\newcommand{\NCO}{\Gamma_\mathrm{EC}}
+\newcommand{\defiff}{\overset{\text{def}}{\iff}}
+
+
+\title{The minimum of girth and cogirth in binary matroids}
+%\author{James Davies$^1$\and
+%Soh Kumabe$^2$\and
+%Ryuhei Mori$^3$}
+\author{James Davies}
+\affil{Department of Pure Mathematics and Mathematical Statistic, University of Cambridge\\\texttt{jgd37@cam.ac.uk}}
+%\author{Soh Kumabe}
+%\affil{CyberAgent \\\texttt{kumabe\_soh@cyberagent.co.jp}}
+\author{Ryuhei Mori}
+\affil{Graduate School of Mathematics, Nagoya University\\\texttt{mori@math.nagoya-u.ac.jp}}
+
+
+\begin{document}
+\begin{titlingpage}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+For any minor-closed class of binary matroids, the minimum of girth and cogirth is $O(\sqrt{n})$.
+\end{abstract}
+\end{titlingpage}
+\pagenumbering{arabic}
+
+\section{Introduction}
+\section{Preliminaries: Graph, matroids, isotropic systems}
+\subsection{Graph}
+\begin{definition}[Local complementation]
+\end{definition}
+
+\begin{definition}[Pivot transformation]
+For a graph $G=(V,\,E)$, and an edge $\{u,v\}\in E$, \textit{pivot transformation} $G\wedge\{u,v\}$ is defined by
+\begin{enumerate}
+\item Toggle edges between $N_{G}(b)\setminus\{c\}$ and $N_{G}(c)\setminus\{b\}$.
+\item Exchange the labels of $b$ and $c$.
+\end{enumerate}
+\end{definition}
+
+\subsection{Binary matroids}
+\begin{definition}[Matroid]
+Let $E$ be a finite set, and $\mathcal{I}\subseteq 2^E$ be a family of subsets.
+Then, $(E,\,\mathcal{I})$ is \textit{independence system} if
+\begin{enumerate}
+\item $\varnothing\in\mathcal{I}$.
+\item $\forall T\subseteq S\in\mathcal{I}$, $S\in\mathcal{I}\implies T\in\mathcal{I}$.
+\end{enumerate}
+An independence system $(E,\,\mathcal{I})$ is \textit{matroid} if
+\begin{enumerate}[resume]
+\item $\forall S,\,T\in\mathcal{I}$, $|S|>|T|\implies\exists e\in S\setminus T$ such that $T\cup\{e\}\in\mathcal{I}$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Base]
+For a matroid $M$, a maximal independent set is called a \textit{base} of $M$.
+\end{definition}
+
+\begin{definition}[Dual]
+For a matroid $M=(E,\,\mathcal{I})$, the \textit{dual} of $M$ is a matroid $M^*=(E,\,\mathcal{I}^*)$ where
+\begin{align*}
+\mathcal{I}^*&\coloneqq\left\{S\subseteq E\mid \text{$E\setminus S$ includes a base}\right\}.
+\end{align*}
+\end{definition}
+
+\begin{definition}[Matroid minors]
+Let $M=(E,\,\mathcal{I})$ be a matroid.
+A \textit{deletion} $M\setminus e$ for $e\in E$ and a \textit{contraction} $M\mathbin{/} e$ for $e\in E,\, \{e\}\in\mathcal{I}$ is defined as 
+\begin{align*}
+M\setminus e&\coloneqq \left(E\setminus\{e\},\, \left\{S\setminus\{e\}\mid S\in\mathcal{I}\right\}\right)\qquad\forall e\in E\\
+M\mathbin{/} e&\coloneqq \left(E\setminus\{e\},\, \left\{S\setminus\{e\}\mid S\cup\{e\}\in\mathcal{I}\right\}\right)\qquad\forall e\in E,\, \{e\}\in\mathcal{I}.
+\end{align*}
+A matroid $N$ is a \textit{matroid minor} of $M$ if $N$ is obtained from $M$ by deletions and contractions.
+\end{definition}
+
+\begin{lemma}
+\begin{align*}
+(M\setminus e)^* &= M^*\mathbin{/}e\\
+(M\mathbin{/} e)^* &= M^*\setminus e
+\end{align*}
+\end{lemma}
+
+\begin{definition}[Fundamental graph of matroid]
+For a matroid $M=(E,\,\mathcal{I})$ and a base $B$ of $M$,
+a fundamental graph $G_{M,B}$ is a bipartite graph $(E,\, F)$ defined as
+\begin{align*}
+F&\coloneqq\left\{\{b,c\} \mid b\in B,\, c\in E\setminus B,\, B\bigtriangleup\{b,c\}\in\mathcal{I}\right\}.
+\end{align*}
+\end{definition}
+Note that $G_{M,B}=G_{M^*,E\setminus B}$.
+
+\begin{definition}[Binary matroid]
+A matroid $(E,\,\mathcal{I})$ is \textit{binary matroid} if there exists a binary matrix $B\in\mathbb{F}_2^{k\times E}$ for some $k\in\mathbb{N}$ such that
+\begin{align*}
+\mathcal{I} &\coloneqq\left\{S\subseteq E\mid \text{columns of $B$ corresponding to $S$ are linearly independent}\right\}.
+\end{align*}
+\end{definition}
+
+
+\begin{lemma}[Pivot transformation]
+Let $M=(E,\,\mathcal{I})$ be a binary matroid and $B$ be a base of $M$.
+Let $G_{M,B}$ be a fundamental graph.
+Let $\{b,c\}$ be an edge of $G_{M,B}$ where $b\in B$ and $c\in E\setminus B$.
+Then, $G_{M,B\bigtriangleup\{b,c\}} = G_{M,B} \wedge \{b,c\}$.
+\end{lemma}
+
+
+\subsection{Isotropic systems}
+
+\begin{definition}
+Let $F=\{0,x,y,z\}$ be a two-dimensional linear space over $\mathbb{F}_2$ defined by the addition
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|cccc|}
+\hline
+$+$&$0$&$x$&$y$&$z$\\
+\hline
+$0$&$0$&$x$&$y$&$z$\\
+$x$&$x$&$0$&$z$&$y$\\
+$y$&$y$&$z$&$0$&$x$\\
+$z$&$z$&$y$&$x$&$0$\\
+\hline
+\end{tabular}
+\end{table}
+
+A bilinear form $\langle\cdot,\,\cdot\rangle\colon F\times F\to\mathbb{F}_2$ is defined by
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|cccc|}
+\hline
+$\langle\cdot,\,\cdot\rangle$&$0$&$x$&$y$&$z$\\
+\hline
+$0$&$0$&$0$&$0$&$0$\\
+$x$&$0$&$0$&$1$&$1$\\
+$y$&$0$&$1$&$0$&$1$\\
+$z$&$0$&$1$&$1$&$0$\\
+\hline
+\end{tabular}
+\end{table}
+
+For a finite set $V$, $F^V$ denotes a set of maps from $V$ to $F$.
+For $A,\, B\in F^V$, an addition is defined as
+\begin{align*}
+(A+B)(v)&\coloneq A(v) + B(v)\qquad\forall v\in V.
+\end{align*}
+Then, $F^V$ is a linear space on $\mathbb{F}_2$ with this addition.
+A bilinear form $\langle\cdot,\,\cdot\rangle\colon F^V\times F^V\to\mathbb{F}_2$ is defined as
+\begin{align*}
+\langle A,\,B\rangle &\coloneqq \sum_{v\in V} \langle A(v),\,B(v)\rangle.
+\end{align*}
+In other words, $F^V = \bigoplus_{v\in V}F$.
+\end{definition}
+
+\begin{definition}[Isotropic system]
+For a finite set $V$, a subspace $W$ of $F^V$ is an \textit{isotropic system} over $V$ if it satisfies
+\begin{enumerate}
+\item $\forall A,\,B\in W$, $\langle A,\,B\rangle = 0$.
+\item $\dim(W) = |V|$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Girth]
+For $A\in F^V$, a \textit{weight} of $A$ is $|\{v\in V\mid A(v)\ne 0\}|$.
+For an isotropic system $W$ over $V$, a \textit{girth} of $W$ is defined as the minimum weight of non-zero vectors in $W$.
+\end{definition}
+
+\begin{definition}[Local equivalence]
+For isotropic systems $W,\,U$ over $V$, $U$ is \textit{locally equivalent} to $W$ if there exists an invertible linear map $T_v$ over $F$ for each $v\in V$ such that $T\coloneqq \bigoplus_{v\in V}T_v$ is an isomorphism from $U$ to $W$.
+%\begin{align*}
+%W &= \{ A\in  F^V\mid \exists B\in U,\,A(v) = T_v(B(v))\quad\forall v\in V\}.
+%\end{align*}
+We denote by $U\sim W$ the fact that $U$ and $W$ are locally equivalent.
+\end{definition}
+Note that a set of invertible linear maps over $F$ can be regarded as a set of permutations over $\{x,y,z\}$.
+
+\begin{definition}[Fundamental graph]
+Let $W$ be an isotropic system over $V$.
+A graph $G$ is a \textit{fundamental graph} of $W$ if $W$ is locally equivalent to an isotropic system spanned by
+\begin{align*}
+A_v(u) &=
+\begin{cases}
+ x& \text{if } u = v\\
+ z& \text{if } u\in N_G(v)\\
+ 0& \text{otherwise}
+\end{cases}
+\end{align*}
+for $v\in V$.
+\end{definition}
+
+Bouchet proved that any isotropic system has a fundamental graph.
+
+\begin{lemma}
+Let $W$ be an isotropic system over $V$.
+Graphs $G,\,H$ are fundamental graphs of $W$ if and only if $G$ and $H$ are locally equivalent.
+\end{lemma}
+
+For $V'\subseteq V$ and $A\in F^V$, a restriction $A|_{V'}$ is defined as $A|_{V'}(v)=A(v)$ for $v\in V'$.
+\begin{definition}[Minors of isotropic systems]
+For an isotropic system $W$ over $V$, $x$-minor, $y$-minor and $z$-minor are defined as
+\begin{align*}
+W\setminus_x v&\coloneqq\left\{A|_{V\setminus v}\mid A(v)\in\{0,x\}\right\}\\
+W\setminus_y v&\coloneqq\left\{A|_{V\setminus v}\mid A(v)\in\{0,y\}\right\}\\
+W\setminus_z v&\coloneqq\left\{A|_{V\setminus v}\mid A(v)\in\{0,z\}\right\}.
+\end{align*}
+The minors of isotropic systems are isotropic systems as well.
+\end{definition}
+
+\begin{definition}
+For a graph $G=(V,\,E)$,
+\begin{align*}
+G\setminus_x v &\coloneqq (G\wedge \{x,v\})-v\\
+G\setminus_y v &\coloneqq (G*v) - v\\
+G\setminus_z v &\coloneqq G - v
+\end{align*}
+\end{definition}
+
+\begin{lemma}
+Let $W$ be an isotropic system over $V$ with a fundamental graph $G$.
+For any $v\in V$, a graph $G\setminus_z v$ is a fundamental graph of $W\setminus_z v$.
+\end{lemma}
+
+\section{Sum-decomposable systems}
+Let $M$ be a binary matroid associated with a matrix $B\in\mathbb{F}^{k\times n}$.
+Then, a subspace $W$ of $F^V$ spanned by
+\begin{align*}
+M_v&\coloneqq \begin{cases}
+0&\text{if } B
+\end{cases}
+\end{align*}
+
+
+\section*{Acknowledgments}
+The work of RM was supported by JST FOREST Program Grant Number JPMJFR216V and JSPS KAKENHI Grant Numbers JP20H04138, JP20H05966 and JP22H00522.
+
+
+\bibliographystyle{alpha}
+\bibliography{biblio}
+%\printbibliography
+
+\end{document}
