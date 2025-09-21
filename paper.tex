@@ -35,6 +35,7 @@
 
 \DeclareMathOperator{\cutrank}{cutrank}
 \DeclareMathOperator{\rw}{rw}
+\DeclareMathOperator{\girth}{girth}
 
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
@@ -66,13 +67,8 @@
 
 
 \title{The minimum of girth and cogirth in binary matroids}
-%\author{James Davies$^1$\and
-%Soh Kumabe$^2$\and
-%Ryuhei Mori$^3$}
 \author{James Davies}
 \affil{Department of Pure Mathematics and Mathematical Statistic, University of Cambridge\\\texttt{jgd37@cam.ac.uk}}
-%\author{Soh Kumabe}
-%\affil{CyberAgent \\\texttt{kumabe\_soh@cyberagent.co.jp}}
 \author{Ryuhei Mori}
 \affil{Graduate School of Mathematics, Nagoya University\\\texttt{mori@math.nagoya-u.ac.jp}}
 
@@ -116,8 +112,9 @@ An independence system $(E,\,\mathcal{I})$ is \textit{matroid} if
 \end{enumerate}
 \end{definition}
 
-\begin{definition}[Base]
+\begin{definition}[Base and circuit]
 For a matroid $M$, a maximal independent set is called a \textit{base} of $M$.
+A minimal dependent set is called a \textit{circuit} of $M$.
 \end{definition}
 
 \begin{definition}[Dual]
@@ -154,12 +151,53 @@ F&\coloneqq\left\{\{b,c\} \mid b\in B,\, c\in E\setminus B,\, B\bigtriangleup\{b
 Note that $G_{M,B}=G_{M^*,E\setminus B}$.
 
 \begin{definition}[Binary matroid]
-A matroid $(E,\,\mathcal{I})$ is \textit{binary matroid} if there exists a binary matrix $B\in\mathbb{F}_2^{k\times E}$ for some $k\in\mathbb{N}$ such that
+A matroid $(E,\,\mathcal{I})$ is a \textit{binary matroid} if there exists a binary matrix $B\in\mathbb{F}_2^{k\times E}$ for some $k\in\mathbb{N}$ such that
 \begin{align*}
 \mathcal{I} &\coloneqq\left\{S\subseteq E\mid \text{columns of $B$ corresponding to $S$ are linearly independent}\right\}.
 \end{align*}
+Here, $B$ is called a \textit{representation matrix}.
+Without loss of generality, we can assume that rows of a representation matrix are linearly independent.
+In this paper, we assume that rows of representation matrices are always linearly independent.
 \end{definition}
 
+Let $M$ be a binary matroid with a representation matrix $B\in\mathbb{F}_2^{k\times n}$.
+Then, $C\in\mathbb{F}_2^{\ell\times n}$ is a representation matrix of the dual matroid $M^*$
+if and only if $\ell = n-k$ and $BC^T = 0$ where ${}^T$ stands for the transposition of a matrix.
+
+Let $M$ be a binary matroid with a representation matrix $B\in\mathbb{F}_2^{k\times n}$.
+Then, for any invertible matrix $U\in\mathbb{F}_2^{k\times k}$, $UB$ is also a representation matrix for $M$.
+With the multiplication of $U$ and column permutation, we can assume that the representation matrix has a form
+\begin{align*}
+B&=\begin{bmatrix}
+I_k&\mid& A
+\end{bmatrix}
+\end{align*}
+where $A\in\mathbb{F}_2^{k\times (n-k)}$.
+In this case, we can take
+\begin{align*}
+C&=\begin{bmatrix}
+A^T&\mid& I_{n-k}
+\end{bmatrix}
+\end{align*}
+as a representatiom matrix for the dual matroid $M^*$.
+Let $S\subseteq E$ be a subset corresponding to the first $k$ rows of the representation matrix $B=\begin{bmatrix}I_k&\mid&A\end{bmatrix}$.
+In this case, a fundamental graph $G_{M, S}=G_{M^*, E\setminus S}$ has an adjacency matrix $A$. 
+
+\if0
+Let $M$ be a binary matroid with a representation matrix $B\in\mathbb{F}_2^{k\times n}$.
+Then, for any invertible matrix $U\in\mathbb{F}_2^{k\times k}$, $UB$ is also a representation matrix for $M$.
+Conversely, if $B$ and $B'$ represent the same binary matroid $M$, there exists an invertible matrix $U$ such that $B' = UB$.
+Hence, the row space of representatiom matrices is uniquely determined from $M$.
+This linear subspace is called a \textit{cut space} of $M$.
+
+\begin{definition}[Cycle space and cycle matrix of a binary matroid]
+For a binary matroid $M$, a linear space spanned by all circuits of $M$ is called a \textit{cycle space} of $M$.
+A matrix $C\in\mathbb{F}_2^{\ell\tims k}$ whose row space is a cycle space of $M$ is called a \textit{cycle matrix}.
+\end{definition}
+
+Let $M$ be a binary matroid with a representation matrix $B$ and a cycle matrix $C$.
+Then, the matrices $B$ and $C$ are cycle and representation matrices of the dual matroid $M^*$, respectively.
+\fi
 
 \begin{lemma}[Pivot transformation]
 Let $M=(E,\,\mathcal{I})$ be a binary matroid and $B$ be a base of $M$.
@@ -284,14 +322,47 @@ For any $v\in V$, a graph $G\setminus_z v$ is a fundamental graph of $W\setminus
 \end{lemma}
 
 \section{Sum-decomposable systems}
-Let $M$ be a binary matroid associated with a matrix $B\in\mathbb{F}^{k\times n}$.
+
+\begin{definition}[Sum-decomposable system]
+Let $M=(V,\,\mathcal{I})$ be a binary matroid associated with a representation matrix $B\in\mathbb{F}_2^{k\times n}$.
+Let $C\in\mathbb{F}_2^{(n-k)\times n}$ be a representatiom matrix for the dual matroid $M^*$.
 Then, a subspace $W$ of $F^V$ spanned by
 \begin{align*}
-M_v&\coloneqq \begin{cases}
-0&\text{if } B
-\end{cases}
+M_a(v)&\coloneqq \begin{cases}
+0&\text{if } B_{a, v} = 0\\
+x&\text{if } B_{a, v} = 1
+\end{cases}&\forall a\in\{1,\dotsc,k\},\,v\in V\\
+M^*_b(v)&\coloneqq \begin{cases}
+0&\text{if } C_{b, v} = 0\\
+z&\text{if } C_{b, v} = 1
+\end{cases}&\forall b\in\{1,\dotsc,n-k\},\,v\in V
 \end{align*}
+is an isotropic system, and denoted by $xM\oplus zM^*$.
+An isotropic system locally equivalent to $xM\oplus zM^*$ is called a \textit{sum-decomposable system}.
+\end{definition}
 
+A fundamental graph of a binary matroid $M$ is a fundamental graph of an isotropic system $xM\oplus zM^*$.
+
+\begin{lemma}
+The girth of $xM\oplus zM^*$ is equal to $\min\{\girth(M),\,\girth(M^*)\}$.
+\end{lemma}
+\begin{proof}
+%For any $A\in xM\oplus zM^*$, there exists $S,\,T\subseteq V$ such that $A=x1_S+z1_T$.
+Let $S\subseteq E$ be the minimum circuit of $M$.
+Then, $z1_S$ is in $xM\oplus zM^*$.
+Let $S\subseteq E$ be the minimum circuit of $M^*$.
+Then, $x1_S$ is in $xM\oplus zM^*$.
+This imlpies $\girth(xM\oplus zM^*)\le \min\{\girth(M),\,\girth(M^*)\}$.
+Since there is no cancellation in the sum of $x$ vector and $z$ vector, the minimum non-zero weight vector in $xM+zM^*$ is $x$ vector or $z$ vector.
+Hence, $\girth(xM\oplus zM^*)= \min\{\girth(M),\,\girth(M^*)\}$.
+\end{proof}
+
+\begin{lemma}
+Let $M$ be a binary matroid.
+Let $G$ be a fundamental graph of $xM\oplus zM^*$.
+Let $\mathcal{C}$ be a family of graphs that are pivot-equivalent to $G$.
+The minimum degree of graphs in $\mathcal{C}$ is 
+\end{lemma}
 
 \section*{Acknowledgments}
 The work of RM was supported by JST FOREST Program Grant Number JPMJFR216V and JSPS KAKENHI Grant Numbers JP20H04138, JP20H05966 and JP22H00522.
