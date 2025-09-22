@@ -64,6 +64,8 @@
 \newcommand{\NCZ}{\Gamma_\mathrm{CZ}}
 \newcommand{\NCO}{\Gamma_\mathrm{EC}}
 \newcommand{\defiff}{\overset{\text{def}}{\iff}}
+\newcommand{\Mdel}{\setminus}
+\newcommand{\Mcon}{\mathbin{/}}
 
 
 \title{The minimum of girth and cogirth in binary matroids}
@@ -85,7 +87,7 @@ For any minor-closed class of binary matroids, the minimum of girth and cogirth 
 \pagenumbering{arabic}
 
 \section{Introduction}
-\section{Preliminaries: Graph, matroids, isotropic systems}
+\section{Preliminaries: Graph, matroids and isotropic systems}
 \subsection{Graph}
 \begin{definition}[Local complementation]
 \end{definition}
@@ -359,10 +361,30 @@ Hence, $\girth(xM\oplus zM^*)= \min\{\girth(M),\,\girth(M^*)\}$.
 
 \begin{lemma}
 Let $M$ be a binary matroid.
-Let $G$ be a fundamental graph of $xM\oplus zM^*$.
-Let $\mathcal{C}$ be a family of graphs that are pivot-equivalent to $G$.
-The minimum degree of graphs in $\mathcal{C}$ is 
+%Let $G$ be a fundamental graph of $xM\oplus zM^*$.
+Let $B$ be an arbitrary base of $M$.
+%Let $G_{M,\,B}$ be a fundamental graph of $M$ for a base $B$ of $M$.
+Then, the minimum right-degree of $G_{M,B}$ among choice of base $B$ of $M$ is $\girth(M)-1$.
+Similarly, the minimum left-degree of $G_{M,B}$ among choice of base $B$ of $M$ is $\girth(M^*)-1$.
 \end{lemma}
+
+\begin{corollary}
+Let $M$ be a binary matroid.
+Let $G$ be a fundamental graph of $xM\oplus zM^*$.
+The minimum degree of bipartite graphs that are pivot-equivalent to $G$ is $\min\{\girth(M),\,\girth(M^*)\}-1$.
+\end{corollary}
+
+
+\begin{lemma}
+Let $M$ be a binary matroid on $V$.
+Then, for $v\in V$.
+\begin{align*}
+(xM\oplus zM^*)\setminus_x v &= x(M\setminus v) \oplus z (M^* \mathbin{/} v)\\
+(xM\oplus zM^*)\setminus_z v &= x(M\mathbin{/} v) \oplus z (M^* \setminus v).
+\end{align*}
+\end{lemma}
+
+\section{Stabilizer states}
 
 \section*{Acknowledgments}
 The work of RM was supported by JST FOREST Program Grant Number JPMJFR216V and JSPS KAKENHI Grant Numbers JP20H04138, JP20H05966 and JP22H00522.
