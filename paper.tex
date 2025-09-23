@@ -81,7 +81,7 @@
 \thispagestyle{empty}
 
 \begin{abstract}
-For any minor-closed class of binary matroids, the minimum of girth and cogirth is $O(\sqrt{n})$.
+For any minor-closed class of binary matroids, the minimum of girth and cogirth is $O(\sqrt{n})$ where $n$ is a number of elements in a matroid.
 \end{abstract}
 \end{titlingpage}
 \pagenumbering{arabic}
@@ -93,11 +93,11 @@ For any minor-closed class of binary matroids, the minimum of girth and cogirth 
 \end{definition}
 
 \begin{definition}[Pivot transformation]
-For a graph $G=(V,\,E)$, and an edge $\{u,v\}\in E$, \textit{pivot transformation} $G\wedge\{u,v\}$ is defined by
-\begin{enumerate}
-\item Toggle edges between $N_{G}(b)\setminus\{c\}$ and $N_{G}(c)\setminus\{b\}$.
-\item Exchange the labels of $b$ and $c$.
-\end{enumerate}
+%For a graph $G=(V,\,E)$, and an edge $\{u,v\}\in E$, \textit{pivot transformation} $G\wedge\{u,v\}$ is defined by
+%\begin{enumerate}
+%\item Toggle edges between $N_{G}(b)\setminus\{c\}$ and $N_{G}(c)\setminus\{b\}$.
+%\item Exchange the labels of $b$ and $c$.
+%\end{enumerate}
 \end{definition}
 
 \subsection{Binary matroids}
@@ -204,7 +204,7 @@ Then, the matrices $B$ and $C$ are cycle and representation matrices of the dual
 \begin{lemma}[Pivot transformation]
 Let $M=(E,\,\mathcal{I})$ be a binary matroid and $B$ be a base of $M$.
 Let $G_{M,B}$ be a fundamental graph.
-Let $\{b,c\}$ be an edge of $G_{M,B}$ where $b\in B$ and $c\in E\setminus B$.
+Let $\{b,c\}$ be an edge of $G_{M,B}$ for $b\in B$ and $c\in E\setminus B$.
 Then, $G_{M,B\bigtriangleup\{b,c\}} = G_{M,B} \wedge \{b,c\}$.
 \end{lemma}
 
@@ -215,7 +215,7 @@ Then, $G_{M,B\bigtriangleup\{b,c\}} = G_{M,B} \wedge \{b,c\}$.
 Let $F=\{0,x,y,z\}$ be a two-dimensional linear space over $\mathbb{F}_2$ defined by the addition
 \begin{table}[h]
 \centering
-\begin{tabular}{|c|cccc|}
+\begin{tabular}[b]{|c|cccc|}
 \hline
 $+$&$0$&$x$&$y$&$z$\\
 \hline
@@ -224,13 +224,13 @@ $x$&$x$&$0$&$z$&$y$\\
 $y$&$y$&$z$&$0$&$x$\\
 $z$&$z$&$y$&$x$&$0$\\
 \hline
-\end{tabular}
+\end{tabular}.
 \end{table}
 
 A bilinear form $\langle\cdot,\,\cdot\rangle\colon F\times F\to\mathbb{F}_2$ is defined by
 \begin{table}[h]
 \centering
-\begin{tabular}{|c|cccc|}
+\begin{tabular}[b]{|c|cccc|}
 \hline
 $\langle\cdot,\,\cdot\rangle$&$0$&$x$&$y$&$z$\\
 \hline
@@ -239,7 +239,7 @@ $x$&$0$&$0$&$1$&$1$\\
 $y$&$0$&$1$&$0$&$1$\\
 $z$&$0$&$1$&$1$&$0$\\
 \hline
-\end{tabular}
+\end{tabular}.
 \end{table}
 
 For a finite set $V$, $F^V$ denotes a set of maps from $V$ to $F$.
@@ -264,7 +264,7 @@ For a finite set $V$, a subspace $W$ of $F^V$ is an \textit{isotropic system} ov
 \end{definition}
 
 \begin{definition}[Girth]
-For $A\in F^V$, a \textit{weight} of $A$ is $|\{v\in V\mid A(v)\ne 0\}|$.
+For $A\in F^V$, a \textit{weight} of $A$ is denoted by $|A|\coloneqq|\{v\in V\mid A(v)\ne 0\}|$.
 For an isotropic system $W$ over $V$, a \textit{girth} of $W$ is defined as the minimum weight of non-zero vectors in $W$.
 \end{definition}
 
@@ -277,18 +277,22 @@ We denote by $U\sim W$ the fact that $U$ and $W$ are locally equivalent.
 \end{definition}
 Note that a set of invertible linear maps over $F$ can be regarded as a set of permutations over $\{x,y,z\}$.
 
-\begin{definition}[Fundamental graph]
-Let $W$ be an isotropic system over $V$.
-A graph $G$ is a \textit{fundamental graph} of $W$ if $W$ is locally equivalent to an isotropic system spanned by
+\begin{definition}[Isotropic system associated with graph]
+For a graph $G$ on a vertex set $V$, define an isotropic system $W_G$ over $V$ that is spanned by
 \begin{align*}
 A_v(u) &=
 \begin{cases}
  x& \text{if } u = v\\
  z& \text{if } u\in N_G(v)\\
  0& \text{otherwise}
-\end{cases}
+\end{cases},\qquad \forall u\in V
 \end{align*}
 for $v\in V$.
+\end{definition}
+
+\begin{definition}[Fundamental graph]
+Let $W$ be an isotropic system over $V$.
+A graph $G$ is a \textit{fundamental graph} of $W$ if $W$ is locally equivalent to $W_G$.
 \end{definition}
 
 Bouchet proved that any isotropic system has a fundamental graph.
@@ -298,7 +302,7 @@ Let $W$ be an isotropic system over $V$.
 Graphs $G,\,H$ are fundamental graphs of $W$ if and only if $G$ and $H$ are locally equivalent.
 \end{lemma}
 
-For $V'\subseteq V$ and $A\in F^V$, a restriction $A|_{V'}$ is defined as $A|_{V'}(v)=A(v)$ for $v\in V'$.
+For $V'\subseteq V$ and $A\in F^V$, a restriction $A|_{V'}\in F^{V'}$ is defined as $A|_{V'}(v)=A(v)$ for $v\in V'$.
 \begin{definition}[Minors of isotropic systems]
 For an isotropic system $W$ over $V$, $x$-minor, $y$-minor and $z$-minor are defined as
 \begin{align*}
@@ -312,7 +316,7 @@ The minors of isotropic systems are isotropic systems as well.
 \begin{definition}
 For a graph $G=(V,\,E)$,
 \begin{align*}
-G\setminus_x v &\coloneqq (G\wedge \{x,v\})-v\\
+G\setminus_x v &\coloneqq (G\wedge \{v,w\})-v\qquad \text{for some $w\in N_G(v)$}\\
 G\setminus_y v &\coloneqq (G*v) - v\\
 G\setminus_z v &\coloneqq G - v
 \end{align*}
@@ -320,7 +324,13 @@ G\setminus_z v &\coloneqq G - v
 
 \begin{lemma}
 Let $W$ be an isotropic system over $V$ with a fundamental graph $G$.
-For any $v\in V$, a graph $G\setminus_z v$ is a fundamental graph of $W\setminus_z v$.
+%For any $v\in V$, a graph $G\setminus_z v$ is a fundamental graph of $W\setminus_z v$.
+Then,
+\begin{align*}
+W_G \setminus_x v &\sim W_{G\setminus_x v}\\
+W_G \setminus_y v &\sim W_{G\setminus_y v}\\
+W_G \setminus_z v &= W_{G\setminus_z v}
+\end{align*}
 \end{lemma}
 
 \section{Sum-decomposable systems}
@@ -355,17 +365,19 @@ Then, $z1_S$ is in $xM\oplus zM^*$.
 Let $S\subseteq E$ be the minimum circuit of $M^*$.
 Then, $x1_S$ is in $xM\oplus zM^*$.
 This imlpies $\girth(xM\oplus zM^*)\le \min\{\girth(M),\,\girth(M^*)\}$.
-Since there is no cancellation in the sum of $x$ vector and $z$ vector, the minimum non-zero weight vector in $xM+zM^*$ is $x$ vector or $z$ vector.
+Since there is no cancellation in the sum of $x$-vector and $z$-vector, the minimum non-zero weight vector in $xM+zM^*$ is $x$-vector or $z$-vector.
 Hence, $\girth(xM\oplus zM^*)= \min\{\girth(M),\,\girth(M^*)\}$.
 \end{proof}
+
+For a fundamental graph $G_{M,B}$ of a binary matroid $M$ and its base $B$, the \texit{minimum left-degree (or right-degree)} of $G_{M,B}$ is a minimum degree of vertices in $B$ (or $V\setminus B$), respectively.
 
 \begin{lemma}
 Let $M$ be a binary matroid.
 %Let $G$ be a fundamental graph of $xM\oplus zM^*$.
 Let $B$ be an arbitrary base of $M$.
 %Let $G_{M,\,B}$ be a fundamental graph of $M$ for a base $B$ of $M$.
-Then, the minimum right-degree of $G_{M,B}$ among choice of base $B$ of $M$ is $\girth(M)-1$.
-Similarly, the minimum left-degree of $G_{M,B}$ among choice of base $B$ of $M$ is $\girth(M^*)-1$.
+Then, the minimum right-degree of $G_{M,B}$ among all choices of base $B$ of $M$ is $\girth(M)-1$.
+Similarly, the minimum left-degree of $G_{M,B}$ among all choices of base $B$ of $M$ is $\girth(M^*)-1$.
 \end{lemma}
 
 \begin{corollary}
